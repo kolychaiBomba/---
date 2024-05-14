@@ -21,7 +21,7 @@ font1 = font.SysFont('microsoftjhengheimicrosoftjhengheiuilight', 36)
 class qwerSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed):
         super().__init__()
-        self.image = transform.rotate( transform.scale(image.load(player_image), (160, 160)), 295)
+        self.image = transform.scale(image.load(player_image), (50, 200))
         self.speed = player_speed
         self.rect = self.image.get_rect()
         self.rect.x = player_x
@@ -37,7 +37,7 @@ class qwerSprite(sprite.Sprite):
             self.rect.x += 5
         if keys_pressed[K_w] and self.rect.y > 0:
             self.rect.y -= 5
-        if keys_pressed[K_s] and self.rect.y < 600: 
+        if keys_pressed[K_s] and self.rect.y < 500: 
             self.rect.y += 5   
     def update2(self):
         keys_pressed = key.get_pressed()
@@ -45,16 +45,19 @@ class qwerSprite(sprite.Sprite):
             self.rect.x -= 5    
         if keys_pressed[K_RIGHT] and self.rect.x < 950:
             self.rect.x += 5
-        if keys_pressed[K_DOWN] and self.rect.y > 0:
+        if keys_pressed[K_UP] and self.rect.y > 0:
             self.rect.y -= 5
-        if keys_pressed[K_UP] and self.rect.y < 600:
+        if keys_pressed[K_DOWN] and self.rect.y < 500:
             self.rect.y += 5
 
+RAKETKA = qwerSprite('raketka.png', 20, 300, 2)
+RAKETKA2 = qwerSprite('raketka.png', 900, 300, 2)
+
 #? класс мячика
-class boll(sprite.Sprite):
+class Ball(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed):
         super().__init__()
-        self.image = transform.rotate( transform.scale(image.load(player_image), (170, 110)), 0)
+        self.image = transform.scale(image.load(player_image), (100, 100))
         self.speed = player_speed
         self.rect = self.image.get_rect()
         self.rect.x = player_x
@@ -63,12 +66,11 @@ class boll(sprite.Sprite):
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
     def update(self):
-        self.rect.x += self.speed
-        global lost
-        if self.rect.x > 1000:
-            self.rect.y = randint(0,  300)
-            lost += 1
-            self.rect.x = 0
+        pass
+
+RAKETKA = qwerSprite('raketka.png', 20, 300, 2)
+RAKETKA2 = qwerSprite('raketka.png', 900, 300, 2)
+BALL = Ball('boll.png', 50, 50, 2)
 
 game = True
 finish = True
@@ -79,9 +81,14 @@ while game:
     window.blit(background, (0, 0))
     for i in event.get():
         if i.type == QUIT:
-            game = False
+                game = False
     if finish: 
-        pass
+        RAKETKA.update()
+        RAKETKA2.update2()
+        RAKETKA.reset()
+        RAKETKA2.reset()
+        BALL.update()
+        BALL.reset()
     else:
         text_win = font2.render('Победил 1 игрок!!!', 1, (230, 191, 0))
         window.blit(text_win,(400, 300))
